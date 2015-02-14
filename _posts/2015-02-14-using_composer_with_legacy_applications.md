@@ -49,7 +49,7 @@ You may have to manually namespace a couple files to prevent conflicts, than dum
 
 ## Autoloading functions
 
-Paul M. Jones' book [Modernizing Legacy Applications in PHP] recommends moving all functions to static methods on classes to allow autoloading as a first step towards modernizing legacy code.
+Paul M. Jones' book [Modernizing Legacy Applications in PHP](https://leanpub.com/mlaphp) recommends moving all functions to static methods on classes to allow autoloading as a first step towards modernizing legacy code.
 
 This is a great first step as you can now move global functions into namespaced classes.  Legacy applications seem to like including page specific functions on those pages only, and as a result have conflicting names with other functions.
 
