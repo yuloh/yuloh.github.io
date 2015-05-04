@@ -1,4 +1,4 @@
 ---
 layout: post
-title: Using Facades to make legacy code testable
+title: How Laravel Facades Work
 ---
