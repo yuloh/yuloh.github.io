@@ -55,21 +55,21 @@ So if the point of a stream is to limit how much you read in to memory at once, 
 Lets go over a somewhat realistic scenario.  Your manager emails you a giant list of phone numbers:
 
 ```
-1-598-660-4384
-1-840-505-1259
-1-413-358-0418
-1-836-419-6894
-1-166-895-2257
-1-472-659-7151
-1-497-203-2215
-1-564-893-5668
-1-110-419-0622
-1-701-904-6237
-1-822-717-6872
-1-604-603-5119
-1-794-734-9796
-1-578-708-2250
-1-401-314-1756
+1-598-555-4384
+1-840-555-1259
+1-413-555-0418
+1-836-555-6894
+1-166-555-2257
+1-472-555-7151
+1-497-555-2215
+1-564-555-5668
+1-110-555-0622
+1-701-555-6237
+1-822-555-6872
+1-604-555-5119
+1-794-555-9796
+1-578-555-2250
+1-401-555-1756
 ```
 
 ![office space-boss asking you to parse phone numbers](https://imgflip.com/i/tm6es)
@@ -83,14 +83,14 @@ Open a terminal in the same directory as your phone number file, then boot up [p
 >>> $numbers = fopen(__DIR__ . '/numbers.txt', 'r');
 => stream resource #311
 >>> $line = fgets($numbers)
-=> "1-598-660-4384\n"
+=> "1-598-555-4384\n"
 ```
 
 Awesome, we read one line. Let's run it again:
 
 ```PHP
 >>> $line = fgets($numbers)
-=> "1-840-505-1259\n"
+=> "1-840-555-1259\n"
 ```
 
 Yay, it read the next line.  But wait, does that mean it knows where to start reading from?  BAM, IT DOES.  It's called a file pointer.  And if you ask, it will ftell you where it is.
