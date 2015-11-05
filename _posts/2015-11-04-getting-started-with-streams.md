@@ -72,7 +72,7 @@ Lets go over a somewhat realistic scenario.  Your manager emails you a giant lis
 1-401-555-1756
 ```
 
-![office space-boss asking you to parse phone numbers](https://imgflip.com/i/tm6es)
+![](https://imgflip.com/i/tm6es)
 
 So theres a billion phone numbers, but there's one per line.  So you fire up google and search 'get line stream php'.  And since it's PHP there are two functions that do almost the same thing.  Awesome.  lets just use `fgets` since it only requires one parameter.
 

@@ -4,8 +4,4 @@ title: About
 permalink: /about/
 ---
 
-Web developer from Black Mountain, NC.
-
-### Contact me
-
-[matthewjamesallan@gmail.com](mailto:matthewjamesallan@gmail.com)
+I used to be a bike mechanic, now I write software.  Currently living in Palo Alto, CA.
