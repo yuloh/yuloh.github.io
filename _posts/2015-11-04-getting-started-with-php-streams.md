@@ -1,24 +1,27 @@
 ---
 layout: post
-title: Getting Started With Streams
+title: Getting Started With PHP Streams
+image: /assets/article_images/2015-11-04-getting-started-with-streams/cover.jpg
 ---
 # Streams
 
 ## Why Use Streams
 
-Most of the time, you open files as strings, using something like `file_get_contents()`.  This works, but PHP will load the entire file in to memory as a string.  If you open a 20MB file, it's going to consume 20MB of memory.  With small files, this is convenient and it's OK.  Most PHP installations are set to use a really small amount of memory, like 64MB [^1].  If you wanted to work with a really big file, you are going to run in to problems.
+Most of the time, you open files as strings, using something like `file_get_contents()`.  This works, but PHP will load the entire file in to memory as a string.  If you open a 20MB file, it's going to consume 20MB of memory.  With small files, this is convenient and it's OK.  Most PHP installations are set to use a really small amount of memory, like 64MB [^n].  If you wanted to work with a really big file, you are going to run in to problems.
 
 ```PHP
+<?php
 $iso = file_get_contents(__DIR__ . '/ubuntu-14.04.3-desktop-amd64.iso');
 ```
 
-```PHP
+```
 > PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 1480316816 bytes)
 ```
 
 The solution is to use streams.  A stream isn't a string; it's a special data type.  A stream is a 'resource' that can be streamed.  Instead of loading the entire file in to memory, you get a 'handle'.
 
 ```PHP
+<?php
 $handle = fopen(__DIR__ . '/ubuntu-14.04.3-desktop-amd64.iso', 'rb');
 ```
 
@@ -27,6 +30,7 @@ $handle = fopen(__DIR__ . '/ubuntu-14.04.3-desktop-amd64.iso', 'rb');
 So if we were trying to copy the stream we just opened, we could do this:
 
 ```PHP
+<?php
 // Open a (w)rite stream to pointing to 'new-file.iso'
 $dest = fopen(__DIR__ . '/new-file.iso', 'w');
 // Copy our read stream to the write stream
@@ -42,6 +46,7 @@ The computer reads one byte at a time, instead of trying to read it all at once.
 Ok, so let's go over some stream basics.  We already saw how to open a stream:
 
 ```PHP
+<?php
 // Open some-file.txt in (r)ead mode
 $handle = fopen('some-file.txt', 'r');
 ```
@@ -72,7 +77,7 @@ Lets go over a somewhat realistic scenario.  Your manager emails you a giant lis
 1-401-555-1756
 ```
 
-![](https://imgflip.com/i/tm6es)
+![]({{ site.url }}/assets/article_images/2015-11-04-getting-started-with-streams/yeahh.jpg)
 
 So theres a billion phone numbers, but there's one per line.  So you fire up google and search 'get line stream php'.  And since it's PHP there are two functions that do almost the same thing.  Awesome.  lets just use `fgets` since it only requires one parameter.
 
@@ -111,6 +116,7 @@ So, we are 30 bytes in to the file. Count em up.  Lets start over.
 
 Now we are back at the beginning.  Radical.  Now let's write that phone number parser.
 
+
 ```PHP
 <?php
 
@@ -134,4 +140,6 @@ while (true) {
 fclose($numbers);
 ```
 
-[^1] You can check your memory limit by running `php -i | grep memory_limit` from the terminal.
+[^n]: You can check your memory limit by running `php -i | grep memory_limit` from the terminal.
+
+[The lovely photo is from Reza on Flickr](https://www.flickr.com/photos/r-z/5971164901/in/photolist-a6DMhZ-9XBTbA-64jgJH-CsBKc-pEj7FV-drnQ6D-dqLr9i-nM6B7i-heHhk3-uAptZX-ayDqnw-hpHefW-tmvJX8-nCpt2-h9Up1z-KngjD-cpkUhf-hpGTya-g7AWzU-pBkohm-rDQGzk-btS78h-6Qf4FS-q4Fc5i-i27ZYe-fK9Z2R-GTfji-5a75tt-7Cpqmn-4NVrMe-fM1UGn-rnfsj6-7JAmQH-g9eoZt-edzxoB-6N2DsA-9XKpS9-kDG1rS-pcTHjA-8XBDMp-b9xwBZ-ci3Wv5-p7UpoK-7TjVDu-jcWFsU-ueXgh-4oUZXJ-i8nST8-6cuS2w-yVkisC)
