@@ -1,15 +1,9 @@
 # Build settings
-markdown: redcarpet
-redcarpet:
-  extensions:
-    - footnotes
-    - hard_wrap
-    - no_intra_emphasis
-    - autolink
-    - strikethrough
-highlighter: pygments
-gems:
-  - jemoji
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  input: GFM
+gems: [jekyll-paginate]
 # Site settings
 title: "Matt Allan's Blog"
 description: ""
