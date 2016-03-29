@@ -19,10 +19,10 @@ author_image: "https://avatars0.githubusercontent.com/u/9440455?v=3&s=460"
 
 paginate:	5
 
-# url: "http://matthew-james.github.io/" # the base hostname & protocol for your site
+# url: "http://yuloh.github.io/" # the base hostname & protocol for your site
 baseurl: ""
 #used to display twitter cards
-twitter_handle: '@matthew-james-a'
+twitter_handle: '@__yuloh'
 
 #fill in disqus shortname to use disqus
 #disqus: disqus-shortname
@@ -30,15 +30,15 @@ twitter_handle: '@matthew-james-a'
 # social icons and sharing options
 social:
   - icon:	twitter
-    url:	https://twitter.com/matthew_james_a
+    url:	https://twitter.com/__yuloh
     desc: Follow me on twitter
     share_url: http://twitter.com/share
     share_title: ?text=
     share_link: "&amp;url="
 
   - icon:	github
-    url:	https://github.com/matthew-james
-    desc:	Fork me on github
+    url:	https://github.com/yuloh
+    desc:	My code on github
     share_url:
     share_title:
     share_link:
