@@ -1,44 +1,37 @@
-# Build settings
-highlighter: rouge
-markdown: kramdown
-kramdown:
-  input: GFM
-gems: [jekyll-paginate]
-# Site settings
-title: "Matt Allan's Blog"
-description: ""
-email: ""
-#blog logo
-logo: "/assets/images/geodesic_sphere.png"
-# blog cover
-cover: "/assets/images/IMG_4518.JPG"
+name:
+description:
+meta_description:
+aboutPage: false
+paginate: 20
+baseurl: /
+domain_name: 'http://mattallan.org'
+google_analytics: 'UA-XXXXXXXX-X'
+disqus: false
+disqus_shortname: 'your-disqus-shortname'
 
-name: "Matt Allan"
-author: "Matt Allan"
-author_image: "https://avatars0.githubusercontent.com/u/9440455?v=3&s=460"
+# Details for the RSS feed generator
+url:            'http://mattallan.org'
+author:         'Matt Allan'
+authorTwitter:  '__yuloh'
 
-paginate:	5
+permalink:       /:year/:title/
 
-# url: "http://yuloh.github.io/" # the base hostname & protocol for your site
-baseurl: ""
-#used to display twitter cards
-twitter_handle: '@__yuloh'
-
-#fill in disqus shortname to use disqus
-#disqus: disqus-shortname
-
-# social icons and sharing options
-social:
-  - icon:	twitter
-    url:	https://twitter.com/__yuloh
-    desc: Follow me on twitter
-    share_url: http://twitter.com/share
-    share_title: ?text=
-    share_link: "&amp;url="
-
-  - icon:	github
-    url:	https://github.com/yuloh
-    desc:	My code on github
-    share_url:
-    share_title:
-    share_link:
+defaults:
+    -
+        scope:
+            path: "" # empty string for all files
+            type: pages
+        values:
+            layout: default
+    -
+        scope:
+            path: "" # empty string for all files
+            type: posts
+        values:
+            layout: post
+    -
+        scope:
+            path: ""
+            type: drafts
+        values:
+            layout: post

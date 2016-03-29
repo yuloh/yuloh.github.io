@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Why you should be using annotations
+title: Why you should be using annotations (with Doctrine)
 ---
 
 # Introduction
@@ -111,4 +111,4 @@ Another downside of having the configuration so far from the code is that I woul
 
 At this point I have an "icky feeling" about mapping every entity's classname and property names in an external config file.  Having to maintain an XML version of every entity in your application really sucks, and the other mapping formats aren't any better.
 
-Annotations are a lot better.  Real language support for annotations would be nice, but "when in Rome".  
+Annotations are a lot better.  Real language support for annotations would be nice, but "when in Rome".

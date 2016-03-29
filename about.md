@@ -1,7 +1,7 @@
 ---
-layout: page
+layout: default
 title: About
 permalink: /about/
 ---
 
-I used to be a bike mechanic, now I write software.  Currently living in Palo Alto, CA.
+I used to be a bike mechanic, now I write software.  Currently living in Black Mountain, NC.
