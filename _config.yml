@@ -7,6 +7,7 @@ baseurl: /
 domain_name: 'http://mattallan.org'
 disqus: false
 disqus_shortname: 'your-disqus-shortname'
+repository: yuloh/yuloh.github.io
 
 # Details for the RSS feed generator
 url:            'http://mattallan.org'
