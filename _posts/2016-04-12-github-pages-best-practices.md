@@ -131,6 +131,8 @@ For more information, check out the [Github docs](https://help.github.com/articl
 
 ## Use Jekyll Compose
 
+This isn't really specific to Github pages, but I find it so helpful I had to add it.
+
 In Jekyll you are supposed to have the date in the title, like `2016-04-12-learn-jekyll.md`.  You also need to put the files in a specific place, and add special 'front matter' to the top of each post.
 
 Luckily there is a gem that handles all of that.  [Jekyll compose](https://github.com/jekyll/jekyll-compose) adds commands to create drafts, posts, and pages, and will set the correct filename and front matter.
