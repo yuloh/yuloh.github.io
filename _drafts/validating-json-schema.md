@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Why I Wrote My Own Json Schema Validator
+title: Validating JSON Schema
 ---
 
 # Introduction
