@@ -622,6 +622,10 @@ h2.month {
   margin-left: 2px;
 }
 
+.social a {
+	color: #666;
+}
+
 /* Media Queries */
 @media screen and (max-width: 540px) {
 	#wrapper { padding:20px 20px 20px 20px;}

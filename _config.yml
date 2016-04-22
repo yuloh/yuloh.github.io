@@ -1,7 +1,7 @@
 name:
 description:
 meta_description:
-aboutPage: false
+aboutPage: true
 paginate: 20
 baseurl: /
 domain_name: 'http://mattallan.org'
@@ -13,6 +13,7 @@ repository: yuloh/yuloh.github.io
 url:            'http://mattallan.org'
 author:         'Matt Allan'
 authorTwitter:  '__yuloh'
+authorGithub: 'yuloh'
 
 permalink:       /:year/:title/
 
