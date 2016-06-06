@@ -57,4 +57,4 @@ This is the only IIFE I've seen out there in open source PHP code:
 
 [https://github.com/bobthecow/psysh/blob/master/bin/psysh#L15](https://github.com/bobthecow/psysh/blob/master/bin/psysh#L15)
 
-The [Psysh](https://psysh.org) REPL uses an IIFE to keep all the variables in the bootstrap script from leaking.  Let me know if you have any more examples, I will add them to the list!
+The [Psysh](http://psysh.org) REPL uses an IIFE to keep all the variables in the bootstrap script from leaking.  Let me know if you have any more examples, I will add them to the list!
