@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Dependency Injection Containers
+title: Understanding Dependency Injection Containers
 ---
 
 # Introduction
