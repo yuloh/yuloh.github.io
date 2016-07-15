@@ -28,7 +28,7 @@ So if you are writing an e-commerce API that accepts product data like this:
   "properties": {
     "name":       { "type": "string" },
     "category":   { "type": "string" },
-    "price":      { "type": "string", "pattern": "^[0-9]*\\\\.[0-9]{2}$"}
+    "price":      { "type": "string", "pattern": "^[0-9]*\\.[0-9]{2}$"}
     "updated_at": {"format": "date-time"}
   }
 }
