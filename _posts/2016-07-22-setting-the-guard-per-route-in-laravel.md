@@ -3,6 +3,9 @@ layout: post
 title: Setting the Guard Per Route in Laravel
 ---
 
+**edit** you will be able to do this natively in 5.3. The auth middleware will set the default guard and the user resolver. 
+
+
 I've been working with Laravel for awhile, and the [authentication](https://laravel.com/docs/master/authentication) that comes out of the box is pretty awesome.
 
 Laravel let's you setup different guards which authenticate the user differently.  You might have a web guard that uses the session and cookies and an api guard that uses an OAuth token.
