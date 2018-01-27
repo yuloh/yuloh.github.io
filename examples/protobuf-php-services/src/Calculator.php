@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yuloh\Math;
 
 class Calculator implements CalculatorInterface

@@ -6,8 +6,8 @@ I normally use a Macbook Air, which takes 45 watts to charge.  My tablet can cha
 
 ## Working Locally
 
-I looked around and found a few other examples of using a tablet as a development environment, but they all focused on using the tablet as a thin client for a remote server.  I pay for every GB of data I use, and using WIFI or 4G is going to reduce the battery life.  To actually replace my laptop, I needed to do as much work as possible locally.  
- 
+I looked around and found a few other examples of using a tablet as a development environment, but they all focused on using the tablet as a thin client for a remote server.  I pay for every GB of data I use, and using WIFI or 4G is going to reduce the battery life.  To actually replace my laptop, I needed to do as much work as possible locally.
+
 ## Setting Up Termux
 
 I thought I would need to have a rooted tablet to get anything done, but everything actually works great without root.  The first step is to install [Termux](https://termux.com) from the Play Store.  You will need at least Android 6.0; Termux isn't going to support older versions anytime soon.
@@ -42,7 +42,7 @@ If you are used to using an editor like Sublime Text or TextMate, you will proba
 
 Termux comes with every major unix text editor, so go ahead and `apt install` the one you want.  Even neovim is available if that's your thing.
 
-{{vim screenshot}}
+<!-- vim screenshot -->
 
 ## Sharing Files
 
@@ -54,7 +54,7 @@ $ termux-setup-storage
 
 Once you grant permission, there should be a new folder in home.
 
-{{screenshot here}}
+<!-- screenshot here -->
 
 Each folder is a symlink to an android shared folder.  You can [read the  docs](https://termux.com/storage.html) to learn more about what each folder is.  To make it easy to share code, let's make a `code` folder in `~/storage/shared`.
 
@@ -64,7 +64,7 @@ $ mkdir ~/storage/shared/code
 
 If you put your code here, it will show up in Quoda under `/sdcard/code`.  In the cyanogenmod file manager it shows up as `/storage/emulated/0/code`, so I guess the path can vary.
 
-{{Quoda screenshot}}
+<!-- Quoda screenshot -->
 
 ## Setting Up Git
 
