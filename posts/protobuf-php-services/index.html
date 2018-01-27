@@ -26,7 +26,7 @@
 
 
 <meta property="og:title" content="Protobuf PHP Services" />
-<meta property="og:description" content="Introduction Lately I&rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google. It&rsquo;s most commonly associated with Google&rsquo;s RPC framework GRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
+<meta property="og:description" content="Introduction Lately I&rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google. It&rsquo;s most commonly associated with Google&rsquo;s RPC framework gRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
 Example Code The example code for this article is available here." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://mattallan.org/posts/protobuf-php-services/" />
@@ -50,7 +50,7 @@ Example Code The example code for this article is available here." />
 
 
 <meta itemprop="name" content="Protobuf PHP Services">
-<meta itemprop="description" content="Introduction Lately I&rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google. It&rsquo;s most commonly associated with Google&rsquo;s RPC framework GRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
+<meta itemprop="description" content="Introduction Lately I&rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google. It&rsquo;s most commonly associated with Google&rsquo;s RPC framework gRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
 Example Code The example code for this article is available here.">
 
 
@@ -63,7 +63,7 @@ Example Code The example code for this article is available here.">
 <meta itemprop="keywords" content="" />
 
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Protobuf PHP Services"/>
-<meta name="twitter:description" content="Introduction Lately I&rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google. It&rsquo;s most commonly associated with Google&rsquo;s RPC framework GRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
+<meta name="twitter:description" content="Introduction Lately I&rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google. It&rsquo;s most commonly associated with Google&rsquo;s RPC framework gRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
 Example Code The example code for this article is available here."/>
 <meta name="twitter:site" content="@https://www.twitter.com/__yuloh"/>
 
@@ -100,7 +100,7 @@ Example Code The example code for this article is available here."/>
 
 <h1 id="introduction">Introduction</h1>
 
-<p>Lately I&rsquo;ve been investigating <a href="https://developers.google.com/protocol-buffers/">Protobuf</a> as a replacement for JSON RPC services.  If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google.  It&rsquo;s most commonly associated with Google&rsquo;s RPC framework <a href="https://grpc.io/">GRPC</a> but it can be used standalone too.  In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.</p>
+<p>Lately I&rsquo;ve been investigating <a href="https://developers.google.com/protocol-buffers/">Protobuf</a> as a replacement for JSON RPC services.  If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google.  It&rsquo;s most commonly associated with Google&rsquo;s RPC framework <a href="https://grpc.io/">gRPC</a> but it can be used standalone too.  In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.</p>
 
 <h2 id="example-code">Example Code</h2>
 
@@ -124,7 +124,7 @@ touch proto/math.proto</code></pre></div>
 </span><span class="err"></span>    <span class="k">rpc</span> <span class="n">add</span> <span class="p">(</span><span class="n">AddRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">AddReply</span><span class="p">)</span> <span class="p">{}</span><span class="err">
 </span><span class="err"></span>    <span class="k">rpc</span> <span class="n">subtract</span> <span class="p">(</span><span class="n">SubtractRequest</span><span class="p">)</span> <span class="k">returns</span> <span class="p">(</span><span class="n">SubtractReply</span><span class="p">)</span> <span class="p">{}</span><span class="err">
 </span><span class="err"></span><span class="p">}</span></code></pre></div>
-<p>The first line tells the protobuf compiler which version we want to use.  PHP only supports proto3 syntax.  The <code>package</code> specifier is optional but a good idea to avoid name clashes.  In the generated PHP code it will be converted to the namespace. the <code>php_generic_services</code> option tells the compiler we want to generate an interface for the service.  It&rsquo;s optional because you might be using a plugin like grpc that generates it&rsquo;s own service classes.</p>
+<p>The first line tells the protobuf compiler which version we want to use.  PHP only supports proto3 syntax.  The <code>package</code> specifier is optional but a good idea to avoid name clashes.  In the generated PHP code it will be converted to the namespace. the <code>php_generic_services</code> option tells the compiler we want to generate an interface for the service.  It&rsquo;s optional because you might be using a plugin like gRPC that generates it&rsquo;s own service classes.</p>
 
 <h2 id="messages">Messages</h2>
 
@@ -171,9 +171,7 @@ protoc  --php_out<span class="o">=</span>./gen ./proto/math.proto</code></pre></
 
 <p>You will also need the protobuf runtime for PHP.  You can either install the runtime as a C extension or use the PHP package.  The PHP can be installed with composer.  Follow the <a href="https://github.com/google/protobuf/tree/master/php">instructions</a> if you want to use the extension.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">composer require google/protobuf</code></pre></div>
-<h1 id="writing-the-code">Writing the Code</h1>
-
-<h2 id="service">Service</h2>
+<h1 id="writing-the-service">Writing The Service</h1>
 
 <p>The interface has been generated but we still need to implement it.  Create a <code>src</code> directory and inside of it create the calculator service.</p>
 <div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
@@ -199,9 +197,9 @@ protoc  --php_out<span class="o">=</span>./gen ./proto/math.proto</code></pre></
 <span class="p">}</span></code></pre></div>
 <p>The service implements a method for each <code>rpc</code> we defined in the proto.  The contract defined in the proto file is enforced by the generated interface.</p>
 
-<h2 id="http-server">HTTP Server</h2>
+<h1 id="a-simple-http-server">A Simple HTTP Server</h1>
 
-<p>Let&rsquo;s test our service by making it available over HTTP.  Our HTTP script will check if the path is <code>/add</code> or <code>/subtract</code>.  if so it will deserialize the request, call the service, and return the serialized reply.  Save this to <code>public/index.php</code> and boot the built in webserver.</p>
+<p>Let&rsquo;s test our service by making it available over HTTP.  Our HTTP script will check if the path is <code>/add</code> or <code>/subtract</code>.  if so it will deserialize the request, call the service, and return the serialized reply.  Save this to <code>public/index.php</code>.</p>
 
 <p>A protocol buffer can be serialized to text, JSON, or an efficient binary format.  You should always prefer the binary format for production.  Not just for efficiency but also because it allows you to benefit from protobuf&rsquo;s backwards and forwards compatibility.</p>
 
@@ -233,7 +231,7 @@ protoc  --php_out<span class="o">=</span>./gen ./proto/math.proto</code></pre></
   <span class="k">default</span><span class="o">:</span>
     <span class="nx">http_response_code</span><span class="p">(</span><span class="mi">404</span><span class="p">);</span>
 <span class="p">}</span></code></pre></div>
-<h2 id="client">Client</h2>
+<h1 id="implementing-the-client">Implementing the Client</h1>
 
 <p>We can use the same service interface to implement our client.  Our client implements a method corresponding to each method on the server and internally makes a cURL request to the server.</p>
 <div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
@@ -306,7 +304,8 @@ protoc  --php_out<span class="o">=</span>./gen ./proto/math.proto</code></pre></
 <p>Start PHP&rsquo;s built in webserver and point it to the public path of our server.</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">php -S localhost:8000 -t ./public</code></pre></div>
 <p>Now in another terminal run the client.  You should see the result of your operations!</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">2</span> + <span class="nv">4</span> <span class="o">=</span> <span class="m">6</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ php ./make_requests.php
+<span class="m">2</span> + <span class="nv">4</span> <span class="o">=</span> <span class="m">6</span>
 <span class="m">5</span> - <span class="nv">4</span> <span class="o">=</span> <span class="m">1</span></code></pre></div>
 <h1 id="conclusion">Conclusion</h1>
 

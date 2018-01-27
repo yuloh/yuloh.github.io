@@ -26,7 +26,7 @@
       <pubDate>Sat, 27 Jan 2018 14:59:42 -0500</pubDate>
       
       <guid>http://mattallan.org/posts/protobuf-php-services/</guid>
-      <description>Introduction Lately I&amp;rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&amp;rsquo;t familiar with Protobuf, it&amp;rsquo;s a language neutral serialization format from Google. It&amp;rsquo;s most commonly associated with Google&amp;rsquo;s RPC framework GRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
+      <description>Introduction Lately I&amp;rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&amp;rsquo;t familiar with Protobuf, it&amp;rsquo;s a language neutral serialization format from Google. It&amp;rsquo;s most commonly associated with Google&amp;rsquo;s RPC framework gRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
 Example Code The example code for this article is available here.</description>
     </item>
     
