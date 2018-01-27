@@ -7,7 +7,7 @@
 <meta name="author" content="Matt Allan">
 
 <meta name="generator" content="Hugo 0.34" />
-<title>Protobuf PHP Services</title>
+<title>Writing Protobuf Services in PHP</title>
 <link rel="shortcut icon" href="http://mattallan.org/images/favicon.ico">
 <link rel="stylesheet" href="http://mattallan.org/css/style.css">
 <link rel="stylesheet" href="http://mattallan.org/css/highlight.css">
@@ -25,7 +25,7 @@
 <link href="http://mattallan.org/index.xml" rel="alternate" type="application/rss+xml" title="Matt Allan" />
 
 
-<meta property="og:title" content="Protobuf PHP Services" />
+<meta property="og:title" content="Writing Protobuf Services in PHP" />
 <meta property="og:description" content="Introduction Lately I&rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google. It&rsquo;s most commonly associated with Google&rsquo;s RPC framework gRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
 Example Code The example code for this article is available here." />
 <meta property="og:type" content="article" />
@@ -49,7 +49,7 @@ Example Code The example code for this article is available here." />
 
 
 
-<meta itemprop="name" content="Protobuf PHP Services">
+<meta itemprop="name" content="Writing Protobuf Services in PHP">
 <meta itemprop="description" content="Introduction Lately I&rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google. It&rsquo;s most commonly associated with Google&rsquo;s RPC framework gRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
 Example Code The example code for this article is available here.">
 
@@ -62,7 +62,7 @@ Example Code The example code for this article is available here.">
 
 <meta itemprop="keywords" content="" />
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Protobuf PHP Services"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Writing Protobuf Services in PHP"/>
 <meta name="twitter:description" content="Introduction Lately I&rsquo;ve been investigating Protobuf as a replacement for JSON RPC services. If you aren&rsquo;t familiar with Protobuf, it&rsquo;s a language neutral serialization format from Google. It&rsquo;s most commonly associated with Google&rsquo;s RPC framework gRPC but it can be used standalone too. In this guide we are going to build a simple calculator RPC service using nothing but the Protobuf compiler and PHP.
 Example Code The example code for this article is available here."/>
 <meta name="twitter:site" content="@https://www.twitter.com/__yuloh"/>
@@ -87,7 +87,7 @@ Example Code The example code for this article is available here."/>
         
 <article class="post">
     <header>
-        <h1>Protobuf PHP Services</h1>
+        <h1>Writing Protobuf Services in PHP</h1>
         <h2 class="subtitle"></h2>
         <h2 class="headline">
         January 27, 2018
@@ -329,7 +329,7 @@ protoc  --php_out<span class="o">=</span>./gen ./proto/math.proto</code></pre></
     </div>
     </a>
     <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fmattallan.org%2fposts%2fprotobuf-php-services%2f - Protobuf%20PHP%20Services by @__yuloh"><span class="icon-twitter"> tweet</span></a>
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fmattallan.org%2fposts%2fprotobuf-php-services%2f - Writing%20Protobuf%20Services%20in%20PHP by @__yuloh"><span class="icon-twitter"> tweet</span></a>
 
 <a class="facebook" href="#" onclick="
     window.open(
