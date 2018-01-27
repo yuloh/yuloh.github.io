@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Matt Allan">
+
+<meta name="generator" content="Hugo 0.34" />
+<title>[meta] Moving From Jekyll to Hugo</title>
+<link rel="shortcut icon" href="http://mattallan.org/images/favicon.ico">
+<link rel="stylesheet" href="http://mattallan.org/css/style.css">
+<link rel="stylesheet" href="http://mattallan.org/css/highlight.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/custom.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/syntax.css">
+
+
+
+<link rel="stylesheet" href="http://mattallan.org/css/monosocialiconsfont.css">
+
+
+
+<link href="http://mattallan.org/index.xml" rel="alternate" type="application/rss+xml" title="Matt Allan" />
+
+
+<meta property="og:title" content="[meta] Moving From Jekyll to Hugo" />
+<meta property="og:description" content="Why This site is hosted on github pages and until today was built using Jekyll. I would push commits and github would rebuild the site for me. Locally I pulled in the github-pages gem so I could preview my site (you can read more about that here). Last week I got a notification that one of my gems had a security vulnerability so I updated everything. I had to update my ruby version which made bundler happy but broke vim." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://mattallan.org/posts/moving-to-hugo/" />
+
+
+
+<meta property="article:published_time" content="2018-01-27T16:10:45-05:00"/>
+
+<meta property="article:modified_time" content="2018-01-27T16:10:45-05:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="[meta] Moving From Jekyll to Hugo">
+<meta itemprop="description" content="Why This site is hosted on github pages and until today was built using Jekyll. I would push commits and github would rebuild the site for me. Locally I pulled in the github-pages gem so I could preview my site (you can read more about that here). Last week I got a notification that one of my gems had a security vulnerability so I updated everything. I had to update my ruby version which made bundler happy but broke vim.">
+
+
+<meta itemprop="datePublished" content="2018-01-27T16:10:45-05:00" />
+<meta itemprop="dateModified" content="2018-01-27T16:10:45-05:00" />
+<meta itemprop="wordCount" content="470">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="[meta] Moving From Jekyll to Hugo"/>
+<meta name="twitter:description" content="Why This site is hosted on github pages and until today was built using Jekyll. I would push commits and github would rebuild the site for me. Locally I pulled in the github-pages gem so I could preview my site (you can read more about that here). Last week I got a notification that one of my gems had a security vulnerability so I updated everything. I had to update my ruby version which made bundler happy but broke vim."/>
+<meta name="twitter:site" content="@https://www.twitter.com/__yuloh"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='http://mattallan.org/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+		<a class="cta" href="http://mattallan.org/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>[meta] Moving From Jekyll to Hugo</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        January 27, 2018
+        <br>
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<h1 id="why">Why</h1>
+
+<p>This site is hosted on github pages and until today was built using Jekyll.  I would push commits and github would rebuild the site for me.  Locally I pulled in the github-pages gem so I could preview my site (you can read more about that <a href="http://mattallan.org/posts/github-pages-best-practices/">here</a>).  Last week I got a notification that one of my gems had a security vulnerability so I updated everything.  I had to update my ruby version which made bundler happy but broke vim.  Then I updated vim which caused vim to be incompatible with my python version.  After I finally got bundler and vim working and commited my changes the next github pages build broke my site and spewed a bunch of broken HTML.</p>
+
+<p>I had been wanting to try <a href="https://gohugo.io/">hugo</a> anyway so rather then spend my Saturday debugging Jekyll I made the switch.</p>
+
+<h1 id="setting-up-hugo">Setting Up Hugo</h1>
+
+<p>Since github doesn&rsquo;t build hugo sites automatically the setup is a little different.  You need to create a new repo to hold the source (mine is <a href="https://github.com/yuloh/blog">yuloh/blog</a>) and push the generated code to your pages repo.  These are the basic steps I followed:</p>
+
+<ol>
+<li>Create a new hugo site following the <a href="https://gohugo.io/getting-started/quick-start/">quick start guide</a></li>
+<li>Copy all the posts from Jekyll&rsquo;s <code>_posts</code> directory to Hugo&rsquo;s <code>content/posts</code> directory and update the front matter.</li>
+<li>Copy all the drafts from Jekyll&rsquo;s <code>_drafts</code> directory to Hugo&rsquo;s <code>content/posts</code> directory and update the front matter, adding <code>draft: true</code>.</li>
+<li>Copy all the assets from Jekyll&rsquo;s <code>assets</code> directory to Hugo&rsquo;s <code>static</code> directory.</li>
+<li>Setup <a href="https://gohugo.io/content-management/syntax-highlighting/">syntax highlighting with Chroma</a> and copy over my Rouge theme.</li>
+<li>Delete everything but the CNAME from my github pages repo.</li>
+<li>Follow <a href="https://gohugo.io/hosting-and-deployment/hosting-on-github/#github-user-or-organization-pages">this guide</a> to add my github pages branch as a submodule.</li>
+</ol>
+
+<h1 id="first-impressions">First Impressions</h1>
+
+<h2 id="speed">Speed</h2>
+
+<p>Everything is really fast.  The hugo server takes around 200 milliseconds to boot.  Jekyll takes about 3 seconds.  Livereload takes 20 milliseconds with Hugo; Jekyll takes 2 seconds.</p>
+
+<h2 id="everything-is-simpler">Everything is Simpler</h2>
+
+<p>This is a big one for me.  Installation is simple.  I just have to download the hugo binary and that&rsquo;s it.  No ruby version requirements, no bundler, nothing.  It&rsquo;s great.  Instead of using liquid tags to link to assets you just use the path.  You don&rsquo;t need to include the date in the file name.  You can easily publish a post by deleting <code>draft: true</code> from the frontmatter.  You can override theme files by creating a file at the same path in <code>/static</code>.  This is subjective but I much prefer <code>toml</code> to <code>yaml</code> for config files.</p>
+
+<h2 id="deployment">Deployment</h2>
+
+<p>I originally used Jekyll because I didn&rsquo;t have to build and deploy myself but it&rsquo;s pretty easy with hugo.  The published site is just a submodule and the example script from the hugo docs makes publishing a single command.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>I&rsquo;m enjoying Hugo so far.  If you were thinking about making the switch I would suggest giving it a try.</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/__yuloh">
+    <img class="avatar" src="http://mattallan.org/images/avatar.png">
+    <div>
+        <span class="dark">Matt Allan</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fmattallan.org%2fposts%2fmoving-to-hugo%2f - %5bmeta%5d%20Moving%20From%20Jekyll%20to%20Hugo by @__yuloh"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/posts/protobuf-php-services/">Protobuf PHP Services<aside class="dates">Jan 27 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers-part-ii-autowiring/">Understanding Dependency Injection Containers Part II - Autowiring<aside class="dates">Sep 1 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/setting-the-guard-per-route-in-laravel/">Setting the Guard Per Route in Laravel<aside class="dates">Jul 22 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers/">Understanding Dependency Injection Containers<aside class="dates">Jul 15 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/json-schema-references/">JSON Schema References<aside class="dates">May 5 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dont-use-illuminate-support/">Don&#39;t Use Illuminate Support<aside class="dates">Apr 21 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/github-pages-best-practices/">Github Pages Best Practices<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/iife-life-iife-in-php/">IIFE LIFE - IIFE In PHP<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/automatically-run-unit-tests-with-entr/">Automatically Run Unit Tests With entr<aside class="dates">Mar 31 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/rest-and-ddd/">REST and DDD<aside class="dates">Mar 30 2016</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://www.github.com/yuloh">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/__yuloh">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Matt Allan
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://mattallan.org/js/main.js"></script>
+<script src="http://mattallan.org/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

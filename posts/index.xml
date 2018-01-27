@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Matt Allan</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Jan 2018 14:59:42 -0500</lastBuildDate>
+    <lastBuildDate>Sat, 27 Jan 2018 16:10:45 -0500</lastBuildDate>
     
 	<atom:link href="http://mattallan.org/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[meta] Moving From Jekyll to Hugo</title>
+      <link>http://mattallan.org/posts/moving-to-hugo/</link>
+      <pubDate>Sat, 27 Jan 2018 16:10:45 -0500</pubDate>
+      
+      <guid>http://mattallan.org/posts/moving-to-hugo/</guid>
+      <description>Why This site is hosted on github pages and until today was built using Jekyll. I would push commits and github would rebuild the site for me. Locally I pulled in the github-pages gem so I could preview my site (you can read more about that here). Last week I got a notification that one of my gems had a security vulnerability so I updated everything. I had to update my ruby version which made bundler happy but broke vim.</description>
+    </item>
     
     <item>
       <title>Protobuf PHP Services</title>

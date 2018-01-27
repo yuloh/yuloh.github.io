@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://mattallan.org/posts/moving-to-hugo/</loc>
+    <lastmod>2018-01-27T16:10:45-05:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://mattallan.org/posts/protobuf-php-services/</loc>
     <lastmod>2018-01-27T14:59:42-05:00</lastmod>
   </url>
@@ -79,13 +84,13 @@
   
   <url>
     <loc>http://mattallan.org/</loc>
-    <lastmod>2018-01-27T14:59:42-05:00</lastmod>
+    <lastmod>2018-01-27T16:10:45-05:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://mattallan.org/posts/</loc>
-    <lastmod>2018-01-27T14:59:42-05:00</lastmod>
+    <lastmod>2018-01-27T16:10:45-05:00</lastmod>
     <priority>0</priority>
   </url>
   
