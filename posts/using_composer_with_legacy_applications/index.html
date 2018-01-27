@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Matt Allan">
+
+<meta name="generator" content="Hugo 0.34" />
+<title>Using composer with legacy PHP applications</title>
+<link rel="shortcut icon" href="http://mattallan.org/images/favicon.ico">
+<link rel="stylesheet" href="http://mattallan.org/css/style.css">
+<link rel="stylesheet" href="http://mattallan.org/css/highlight.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/custom.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/syntax.css">
+
+
+
+<link rel="stylesheet" href="http://mattallan.org/css/monosocialiconsfont.css">
+
+
+
+<link href="http://mattallan.org/index.xml" rel="alternate" type="application/rss+xml" title="Matt Allan" />
+
+
+<meta property="og:title" content="Using composer with legacy PHP applications" />
+<meta property="og:description" content="Introduction Composer is a dependency manager and autoloader for PHP.
+The Issue Most legacy applications do not follow a consistent standard like PSR-0 or psr-4.
+Normally composer takes a classname like this:
+Acme\Foo\Bar  And checks the autoload section of composer.json. If you had something like this:
+{ &quot;autoload&quot;: { &quot;psr-4&quot;: { &quot;Acme\\&quot;: [&quot;src/&quot;] } } }  It would check the src folder for a file at src/Foo/Bar.php. The legacy application I work on uses folders for organization, yet namespaces are virtually nonexistent." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://mattallan.org/posts/using_composer_with_legacy_applications/" />
+
+
+
+<meta property="article:published_time" content="2015-02-14T12:00:00-05:00"/>
+
+<meta property="article:modified_time" content="2015-02-14T12:00:00-05:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Using composer with legacy PHP applications">
+<meta itemprop="description" content="Introduction Composer is a dependency manager and autoloader for PHP.
+The Issue Most legacy applications do not follow a consistent standard like PSR-0 or psr-4.
+Normally composer takes a classname like this:
+Acme\Foo\Bar  And checks the autoload section of composer.json. If you had something like this:
+{ &quot;autoload&quot;: { &quot;psr-4&quot;: { &quot;Acme\\&quot;: [&quot;src/&quot;] } } }  It would check the src folder for a file at src/Foo/Bar.php. The legacy application I work on uses folders for organization, yet namespaces are virtually nonexistent.">
+
+
+<meta itemprop="datePublished" content="2015-02-14T12:00:00-05:00" />
+<meta itemprop="dateModified" content="2015-02-14T12:00:00-05:00" />
+<meta itemprop="wordCount" content="550">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Using composer with legacy PHP applications"/>
+<meta name="twitter:description" content="Introduction Composer is a dependency manager and autoloader for PHP.
+The Issue Most legacy applications do not follow a consistent standard like PSR-0 or psr-4.
+Normally composer takes a classname like this:
+Acme\Foo\Bar  And checks the autoload section of composer.json. If you had something like this:
+{ &quot;autoload&quot;: { &quot;psr-4&quot;: { &quot;Acme\\&quot;: [&quot;src/&quot;] } } }  It would check the src folder for a file at src/Foo/Bar.php. The legacy application I work on uses folders for organization, yet namespaces are virtually nonexistent."/>
+<meta name="twitter:site" content="@https://www.twitter.com/__yuloh"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='http://mattallan.org/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+		<a class="cta" href="http://mattallan.org/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Using composer with legacy PHP applications</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        February 14, 2015
+        <br>
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<h2 id="introduction">Introduction</h2>
+
+<p><a href="https://getcomposer.org/">Composer</a> is a dependency manager and autoloader for PHP.</p>
+
+<h2 id="the-issue">The Issue</h2>
+
+<p>Most legacy applications do not follow a consistent standard like <a href="http://www.php-fig.org/psr/psr-0/">PSR-0</a> or <a href="http://www.php-fig.org/psr/psr-4/">psr-4</a>.</p>
+
+<p>Normally composer takes a classname like this:</p>
+
+<pre><code>Acme\Foo\Bar
+</code></pre>
+
+<p>And checks the autoload section of <code>composer.json</code>.  If you had something like this:</p>
+
+<pre><code>{
+    &quot;autoload&quot;: {
+        &quot;psr-4&quot;: { &quot;Acme\\&quot;: [&quot;src/&quot;] }
+    }
+}
+</code></pre>
+
+<p>It would check the <code>src</code> folder for a file at <code>src/Foo/Bar.php</code>.  The legacy application I work on uses folders for organization, yet namespaces are virtually nonexistent.  PSR-4 autoloading is not going to work without renaming, reorganizing, &amp; namespacing a few hundred files.  After this I would be  fixing all of the manual includes developers used because the autoloader was unreliable, and spot testing a ton of files.</p>
+
+<h2 id="using-a-classmap">Using a classmap</h2>
+
+<p>I thought this would be a problem but composer works fine with any naming convention.   The trick is to setup your <code>composer.json</code> with a <a href="https://getcomposer.org/doc/04-schema.md#classmap">classmap</a> key.</p>
+
+<p>On production, composer recommends you use the <code>--optimize-autoloader (-o)</code> flag.  This takes PSR-0 / PSR-4 autoloading and generates a classmap.</p>
+
+<p>A classmap is a big array of class names and their cooresponding paths.  You can register your classes folder under a classmap key and it will always generate a classmap instead of trying to autoload using a PSR standard.</p>
+
+<p>Here is the example from Composer&rsquo;s website:</p>
+
+<pre><code>{
+    &quot;autoload&quot;: {
+        &quot;classmap&quot;: [&quot;src/&quot;, &quot;lib/&quot;, &quot;Something.php&quot;]
+    }
+}
+</code></pre>
+
+<p>Now running <code>composer dump-autoload</code> will generate an associative array of all your class names and their cooresponding files.</p>
+
+<p>The first time you dump-autoload you may have some class conflicts.  In my situation developers somehow (using includes?) managed to have multiple classes with the same non-namespaced names in our autoloaded folder.</p>
+
+<p>You may have to manually namespace a couple files to prevent conflicts, than dump-autoload again.  It still beats namespacing and renaming <strong>every</strong> file.</p>
+
+<h2 id="autoloading-functions">Autoloading functions</h2>
+
+<p>Paul M. Jones&rsquo; book <a href="https://leanpub.com/mlaphp">Modernizing Legacy Applications in PHP</a> recommends moving all functions to static methods on classes to allow autoloading as a first step towards modernizing legacy code.</p>
+
+<p>This is a great first step as you can now move global functions into namespaced classes.  Legacy applications seem to like including page specific functions on those pages only, and as a result have conflicting names with other functions.</p>
+
+<p>The other benefit is functions are only loaded when you need them now, instead of every function being included on every request, regardless of being used.</p>
+
+<p>If you can&rsquo;t do this yet, you can use composer to load functions instead of includes.  Just add a <a href="https://getcomposer.org/doc/04-schema.md#files">files</a> key to your autoload section.</p>
+
+<pre><code>{
+    &quot;autoload&quot;: {
+        &quot;files&quot;: [&quot;src/MyLibrary/functions.php&quot;]
+    }
+}
+</code></pre>
+
+<h2 id="benefits">Benefits</h2>
+
+<p>In my unscientific tests, composer was able to load classes twice as fast on average, and sometimes 10x faster than the legacy autoloader we were using.  This is due to using a classmap instead of recursively scanning directories for a file.  Files that were nested deeply loaded incredibly slow, as the legacy autoloader was doing file_exists over and over.</p>
+
+<p>When refactoring legacy code, its really helpful to get vendor code out of the source tree so you can see what is going on.  Using Composer for it&rsquo;s primary purpose, as a dependency manager, allows moving other people&rsquo;s code out of your repository. It makes project wide search easier when refactoring, and also helps discourage modifying vendor files without making it explicit.</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/__yuloh">
+    <img class="avatar" src="http://mattallan.org/images/avatar.png">
+    <div>
+        <span class="dark">Matt Allan</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fmattallan.org%2fposts%2fusing_composer_with_legacy_applications%2f - Using%20composer%20with%20legacy%20PHP%20applications by @__yuloh"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/posts/protobuf-php-services/">Protobuf PHP Services<aside class="dates">Jan 27 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers-part-ii-autowiring/">Understanding Dependency Injection Containers Part II - Autowiring<aside class="dates">Sep 1 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/setting-the-guard-per-route-in-laravel/">Setting the Guard Per Route in Laravel<aside class="dates">Jul 22 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers/">Understanding Dependency Injection Containers<aside class="dates">Jul 15 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/json-schema-references/">JSON Schema References<aside class="dates">May 5 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dont-use-illuminate-support/">Don&#39;t Use Illuminate Support<aside class="dates">Apr 21 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/github-pages-best-practices/">Github Pages Best Practices<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/iife-life-iife-in-php/">IIFE LIFE - IIFE In PHP<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/automatically-run-unit-tests-with-entr/">Automatically Run Unit Tests With entr<aside class="dates">Mar 31 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/rest-and-ddd/">REST and DDD<aside class="dates">Mar 30 2016</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://www.github.com/yuloh">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/__yuloh">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Matt Allan
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://mattallan.org/js/main.js"></script>
+<script src="http://mattallan.org/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

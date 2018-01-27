@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Matt Allan">
+
+<meta name="generator" content="Hugo 0.34" />
+<title>Automatically Run Unit Tests With entr</title>
+<link rel="shortcut icon" href="http://mattallan.org/images/favicon.ico">
+<link rel="stylesheet" href="http://mattallan.org/css/style.css">
+<link rel="stylesheet" href="http://mattallan.org/css/highlight.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/custom.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/syntax.css">
+
+
+
+<link rel="stylesheet" href="http://mattallan.org/css/monosocialiconsfont.css">
+
+
+
+<link href="http://mattallan.org/index.xml" rel="alternate" type="application/rss+xml" title="Matt Allan" />
+
+
+<meta property="og:title" content="Automatically Run Unit Tests With entr" />
+<meta property="og:description" content="Introduction I do a lot of test driven development, and generally use tests a lot when I&rsquo;m writing code. It&rsquo;s nice to have your tests automatically run every time you save a file, so you know if you broke something.
+This guide will show you how to make that happen. Since I mostly do PHP development, this guide will focus on using PHPUnit, but this would work for any test runner." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://mattallan.org/posts/automatically-run-unit-tests-with-entr/" />
+
+
+
+<meta property="article:published_time" content="2016-03-31T12:00:00-05:00"/>
+
+<meta property="article:modified_time" content="2016-03-31T12:00:00-05:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Automatically Run Unit Tests With entr">
+<meta itemprop="description" content="Introduction I do a lot of test driven development, and generally use tests a lot when I&rsquo;m writing code. It&rsquo;s nice to have your tests automatically run every time you save a file, so you know if you broke something.
+This guide will show you how to make that happen. Since I mostly do PHP development, this guide will focus on using PHPUnit, but this would work for any test runner.">
+
+
+<meta itemprop="datePublished" content="2016-03-31T12:00:00-05:00" />
+<meta itemprop="dateModified" content="2016-03-31T12:00:00-05:00" />
+<meta itemprop="wordCount" content="367">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Automatically Run Unit Tests With entr"/>
+<meta name="twitter:description" content="Introduction I do a lot of test driven development, and generally use tests a lot when I&rsquo;m writing code. It&rsquo;s nice to have your tests automatically run every time you save a file, so you know if you broke something.
+This guide will show you how to make that happen. Since I mostly do PHP development, this guide will focus on using PHPUnit, but this would work for any test runner."/>
+<meta name="twitter:site" content="@https://www.twitter.com/__yuloh"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='http://mattallan.org/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+		<a class="cta" href="http://mattallan.org/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Automatically Run Unit Tests With entr</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        March 31, 2016
+        <br>
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<h1 id="introduction">Introduction</h1>
+
+<p>I do a lot of test driven development, and generally use tests a lot when I&rsquo;m writing code.  It&rsquo;s nice to have your tests automatically run every time you save a file, so you know if you broke something.</p>
+
+<p>This guide will show you how to make that happen.  Since I mostly do PHP development, this guide will focus on using PHPUnit, but this would work for any test runner.</p>
+
+<h1 id="entr">entr</h1>
+
+<p><a href="http://entrproject.org/">Entr</a> is a great little unix utility that does one thing well - automatically execute a task when something changes.  There are other utilities like <a href="https://facebook.github.io/watchman/">watchman</a> plus a million node projects, but I like entr because it&rsquo;s simple.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Mac:</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">brew install entr</code></pre></div>
+<p>Ubuntu/Debian:</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt install entr</code></pre></div>
+<p>For other platforms refer to the <a href="https://bitbucket.org/eradman/entr/">docs</a>.  it looks like entr doesn&rsquo;t seem to work on Windows.  Sorry!</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>Now that entr is installed, lets use it to run phpunit!</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">find src/ <span class="p">|</span> entr -c phpunit</code></pre></div>
+<p>Ok so here is what&rsquo;s happening.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">find src/</code></pre></div>
+<p>This command will list all the files in my <code>src</code> directory.  You can change this to include whatever directories you want to watch.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh"><span class="p">|</span></code></pre></div>
+<p>This is a <a href="https://en.wikipedia.org/wiki/Pipeline_(Unix)">unix pipe</a> to pipe the output of find in to entr, so entr knows what files to watch.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">entr -c</code></pre></div>
+<p>The <code>-c</code> flag tells entr to clear the terminal before invoking the command you specified.  For more flags, checkout <code>man entr</code>.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">phpunit</code></pre></div>
+<p>The command to run.</p>
+
+<h2 id="in-action">In Action</h2>
+
+<p>This is what it looks like:</p>
+
+<script type="text/javascript" src="https://asciinema.org/a/c7s87g8ar1yva0uotmmphgi4s.js" id="asciicast-c7s87g8ar1yva0uotmmphgi4s" async></script>
+
+<p>Pretty cool huh?</p>
+
+<h2 id="more-complicated-commands">More Complicated Commands</h2>
+
+<p>If you need to run a more complicated command, you can use <code>sh</code> and put the command in quotes.  Here&rsquo;s an example that uses osx <a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/say.1.html">say</a> to let you know out loud if you break something.</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">find src/ <span class="p">|</span> entr sh -c <span class="s2">&#34;phpunit &amp;&amp; say &#39;good work&#39; || say &#39;oh no&#39;&#34;</span></code></pre></div>
+<h2 id="file-limits">File Limits</h2>
+
+<p>You might try to run entr and get a message like this:</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">entr: Too many files listed<span class="p">;</span> the hard limit <span class="k">for</span> your login class is <span class="m">2560</span>. Please consult http://entrproject.org/limits.html</code></pre></div>
+<p>That means you ran out of <a href="https://en.wikipedia.org/wiki/File_descriptor">file descriptors</a>.  Go read the <a href="http://entrproject.org/limits.html">limit docs</a> and bump your file descriptor limit up and it should work fine (hint: you can get your osx version with <code>sw_vers</code>).</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/__yuloh">
+    <img class="avatar" src="http://mattallan.org/images/avatar.png">
+    <div>
+        <span class="dark">Matt Allan</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fmattallan.org%2fposts%2fautomatically-run-unit-tests-with-entr%2f - Automatically%20Run%20Unit%20Tests%20With%20entr by @__yuloh"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/posts/protobuf-php-services/">Protobuf PHP Services<aside class="dates">Jan 27 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers-part-ii-autowiring/">Understanding Dependency Injection Containers Part II - Autowiring<aside class="dates">Sep 1 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/setting-the-guard-per-route-in-laravel/">Setting the Guard Per Route in Laravel<aside class="dates">Jul 22 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers/">Understanding Dependency Injection Containers<aside class="dates">Jul 15 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/json-schema-references/">JSON Schema References<aside class="dates">May 5 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dont-use-illuminate-support/">Don&#39;t Use Illuminate Support<aside class="dates">Apr 21 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/github-pages-best-practices/">Github Pages Best Practices<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/iife-life-iife-in-php/">IIFE LIFE - IIFE In PHP<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/rest-and-ddd/">REST and DDD<aside class="dates">Mar 30 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/why-you-should-be-using-annotations/">Why you should be using annotations (with Doctrine)<aside class="dates">Feb 19 2016</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://www.github.com/yuloh">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/__yuloh">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Matt Allan
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://mattallan.org/js/main.js"></script>
+<script src="http://mattallan.org/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

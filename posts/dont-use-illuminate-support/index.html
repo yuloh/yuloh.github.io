@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Matt Allan">
+
+<meta name="generator" content="Hugo 0.34" />
+<title>Don&#39;t Use Illuminate Support</title>
+<link rel="shortcut icon" href="http://mattallan.org/images/favicon.ico">
+<link rel="stylesheet" href="http://mattallan.org/css/style.css">
+<link rel="stylesheet" href="http://mattallan.org/css/highlight.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/custom.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/syntax.css">
+
+
+
+<link rel="stylesheet" href="http://mattallan.org/css/monosocialiconsfont.css">
+
+
+
+<link href="http://mattallan.org/index.xml" rel="alternate" type="application/rss+xml" title="Matt Allan" />
+
+
+<meta property="og:title" content="Don&#39;t Use Illuminate Support" />
+<meta property="og:description" content="tl;dr: If you are writing a framework agnostic package, don&rsquo;t use illuminate/support.
+A lot of framework agnostic Composer packages (PHP) pull in illuminate/support, which contains helper functions and general purpose code used by the Laravel framework. Usually it&rsquo;s because the support package has nice helper functions like array_get, or because of the nice collection class.
+The helpers functions are nice, but I don&rsquo;t think developers appreciate the ramifications of choosing to pull that package in." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://mattallan.org/posts/dont-use-illuminate-support/" />
+
+
+
+<meta property="article:published_time" content="2016-04-21T12:00:00-05:00"/>
+
+<meta property="article:modified_time" content="2016-04-21T12:00:00-05:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Don&#39;t Use Illuminate Support">
+<meta itemprop="description" content="tl;dr: If you are writing a framework agnostic package, don&rsquo;t use illuminate/support.
+A lot of framework agnostic Composer packages (PHP) pull in illuminate/support, which contains helper functions and general purpose code used by the Laravel framework. Usually it&rsquo;s because the support package has nice helper functions like array_get, or because of the nice collection class.
+The helpers functions are nice, but I don&rsquo;t think developers appreciate the ramifications of choosing to pull that package in.">
+
+
+<meta itemprop="datePublished" content="2016-04-21T12:00:00-05:00" />
+<meta itemprop="dateModified" content="2016-04-21T12:00:00-05:00" />
+<meta itemprop="wordCount" content="746">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Don&#39;t Use Illuminate Support"/>
+<meta name="twitter:description" content="tl;dr: If you are writing a framework agnostic package, don&rsquo;t use illuminate/support.
+A lot of framework agnostic Composer packages (PHP) pull in illuminate/support, which contains helper functions and general purpose code used by the Laravel framework. Usually it&rsquo;s because the support package has nice helper functions like array_get, or because of the nice collection class.
+The helpers functions are nice, but I don&rsquo;t think developers appreciate the ramifications of choosing to pull that package in."/>
+<meta name="twitter:site" content="@https://www.twitter.com/__yuloh"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='http://mattallan.org/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+		<a class="cta" href="http://mattallan.org/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Don&#39;t Use Illuminate Support</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        April 21, 2016
+        <br>
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p><strong>tl;dr</strong>: If you are writing a framework agnostic package, don&rsquo;t use <a href="https://github.com/illuminate/support">illuminate/support</a>.</p>
+
+<p>A lot of framework agnostic Composer packages (PHP) pull in <a href="https://github.com/illuminate/support">illuminate/support</a>, which contains helper functions and general purpose code used by the Laravel framework.  Usually it&rsquo;s because the support package has <a href="https://laravel.com/docs/5.2/helpers">nice helper functions</a> like <code>array_get</code>, or because of the nice <a href="https://laravel.com/docs/5.2/collections">collection class</a>.</p>
+
+<p>The helpers functions are nice, but I don&rsquo;t think developers appreciate the ramifications of choosing to pull that package in.  Everyone is afraid to get criticized for reinventing the wheel, so packages are pulling in <a href="https://gist.github.com/anonymous/8b85bc6b3858f4959011c38e2fa750bd">6000+ lines of code</a> to avoid writing <code>isset($arr[$k]) ? $arr[$k] : null</code> themselves.</p>
+
+<h2 id="dependency-hell">Dependency Hell</h2>
+
+<p>Using illuminate/support (as of 5.2) makes the package dependent on illuminate/contracts, doctrine/inflector, a polyfill for random_bytes, and mb_string.  Luckily the dependency tree stops there.</p>
+
+<p>mb_string is a <a href="http://php.net/manual/en/mbstring.installation.php">non default extension</a>, so it might not be installed on your user&rsquo;s machine.  If you aren&rsquo;t working with strings, you shouldn&rsquo;t force your users to recompile PHP just to use your package.  If you are, use <a href="https://github.com/danielstjules/Stringy#installation">stringy which can use a polyfill</a>.</p>
+
+<h2 id="version-conflicts">Version Conflicts</h2>
+
+<p>There are <a href="https://packagist.org/packages/illuminate/support/dependents">over 6000 packages</a> dependent on illuminate/support.  If your user installs your package and another package dependent on illuminate/support, they need to depend on the same version or there will be a conflict.  A cursory glance shows that a lot of the framework agnostic dependents are stuck on 4.1.*.</p>
+
+<p>The dependencies are even worse if your package is used with Laravel or Lumen.  The user can&rsquo;t upgrade to the next version until you (and every other package using illuminate/support) release a new version.  Now your framework agnostic package is preventing the user from updating their framework!  The only alternative is to have unbounded ranges like <code>&gt;5.2</code>, but that&rsquo;s a really bad idea.</p>
+
+<h2 id="global-namespace">Global Namespace</h2>
+
+<p>The illuminate/support package pulls <a href="https://github.com/illuminate/support/blob/master/helpers.php">52 functions</a> in to the global namespace.  It&rsquo;s nice when using the framework to not have to use namespaces, but a dependency of a dependency shouldn&rsquo;t pollute the global namespace.</p>
+
+<p>But the helpers are great, why wouldn&rsquo;t you use them?  The case transform libraries don&rsquo;t work <a href="https://github.com/yuloh/case-transform-tests">like you would expect them to</a> and <code>dd</code> <a href="https://asciinema.org/a/5nbhmqvd6lfpyz4ereihvzifa">is useless from the terminal</a>.  Not everyone wants those 52 functions to behave like you expect them to, so let your users keep their global namespace.</p>
+
+<h2 id="type-hint-pollution">Type Hint Pollution</h2>
+
+<p>This is admittedly a minor problem, but it gets irritating when writing code 40+ hours a week.  The support package has a lot of often used class names like Collection, Request, Response, and App.  Every time I import a namespace my IDE tries to import the wrong collection or a useless Laravel facade instead of the actual class I need.  You are pulling in <a href="https://github.com/illuminate/support/tree/master/Facades">a whole directory</a> of classes that don&rsquo;t even work outside of Laravel!  I guarantee you aren&rsquo;t using the facades in your framework agnostic package, so please stop pulling them in to my project.</p>
+
+<h2 id="failure-modes">Failure Modes</h2>
+
+<p>Now your package depends on 3 different organizations not violating SemVer.  Is it really worth risking a <a href="http://blog.npmjs.org/post/141577284765/kik-left-pad-and-npm">left-pad disaster</a> to avoid writing a few lines of code?</p>
+
+<h2 id="aim-for-few-dependencies">Aim For Few Dependencies</h2>
+
+<p>Try to use as few dependencies as possible.  If you look at the <a href="https://packagist.org/packages/league/">framework agnostic packages by the League</a> you will notice they all have few or no dependencies.  It&rsquo;s OK to write a small helper class for the 2 or 3 functions you actually need.  If you don&rsquo;t want to write your own, copy and paste the function you need and properly attribute it as per the license.</p>
+
+<p>If you are <a href="https://blog.wyrihaximus.net/2015/06/test-lowest-current-and-highest-possible-on-travis/">testing all possible versions of dependencies</a>, you will waste more time setting up a build matrix on your CI server than you will writing your own code and tests for a couple of helper functions.</p>
+
+<h2 id="single-purpose-replacements">Single Purpose Replacements</h2>
+
+<p>If you need a ton of functionality, you probably should use a package instead of writing everything yourself.  Since illuminate/support covers a ton of use cases, here are some single purpose libraries that you can use instead.</p>
+
+<h3 id="doctrine-inflector-https-github-com-doctrine-inflector"><a href="https://github.com/doctrine/inflector">doctrine/inflector</a></h3>
+
+<p>Make words singular and plural.  This is actually a dependency of illuminate/support.</p>
+
+<h3 id="danielstjules-stringy-https-github-com-danielstjules-stringy"><a href="https://github.com/danielstjules/Stringy">danielstjules/Stringy</a></h3>
+
+<p>Covers all of the string transformation functions.  This was a dependency of illuminate/support until 5.2.</p>
+
+<h3 id="dusank-knapsack-http-dusankasan-github-io-knapsack"><a href="http://dusankasan.github.io/Knapsack/">dusank/knapsack</a></h3>
+
+<p>Collection pipeline.  This is the only package I&rsquo;ve found that looks comparable to the Laravel collections.</p>
+
+<h3 id="anahkiasen-underscore-php-http-anahkiasen-github-io-underscore-php"><a href="http://anahkiasen.github.io/underscore-php">anahkiasen/underscore-php</a></h3>
+
+<p>Replacements for the array functions if you use dot notation.  I don&rsquo;t know of a good alternative that supports dot notation with zero dependencies.  I just write vanilla PHP for this.  You can use the <a href="https://wiki.php.net/rfc/isset_ternary">null coalesce operator</a> in PHP7+ instead of using <code>array_get</code>.</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/__yuloh">
+    <img class="avatar" src="http://mattallan.org/images/avatar.png">
+    <div>
+        <span class="dark">Matt Allan</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fmattallan.org%2fposts%2fdont-use-illuminate-support%2f - Don%27t%20Use%20Illuminate%20Support by @__yuloh"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/posts/protobuf-php-services/">Protobuf PHP Services<aside class="dates">Jan 27 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers-part-ii-autowiring/">Understanding Dependency Injection Containers Part II - Autowiring<aside class="dates">Sep 1 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/setting-the-guard-per-route-in-laravel/">Setting the Guard Per Route in Laravel<aside class="dates">Jul 22 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers/">Understanding Dependency Injection Containers<aside class="dates">Jul 15 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/json-schema-references/">JSON Schema References<aside class="dates">May 5 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/github-pages-best-practices/">Github Pages Best Practices<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/iife-life-iife-in-php/">IIFE LIFE - IIFE In PHP<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/automatically-run-unit-tests-with-entr/">Automatically Run Unit Tests With entr<aside class="dates">Mar 31 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/rest-and-ddd/">REST and DDD<aside class="dates">Mar 30 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/why-you-should-be-using-annotations/">Why you should be using annotations (with Doctrine)<aside class="dates">Feb 19 2016</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://www.github.com/yuloh">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/__yuloh">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Matt Allan
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://mattallan.org/js/main.js"></script>
+<script src="http://mattallan.org/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

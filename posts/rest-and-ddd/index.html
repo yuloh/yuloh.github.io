@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Matt Allan">
+
+<meta name="generator" content="Hugo 0.34" />
+<title>REST and DDD</title>
+<link rel="shortcut icon" href="http://mattallan.org/images/favicon.ico">
+<link rel="stylesheet" href="http://mattallan.org/css/style.css">
+<link rel="stylesheet" href="http://mattallan.org/css/highlight.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/custom.css">
+
+<link rel="stylesheet" href="http://mattallan.org/css/syntax.css">
+
+
+
+<link rel="stylesheet" href="http://mattallan.org/css/monosocialiconsfont.css">
+
+
+
+<link href="http://mattallan.org/index.xml" rel="alternate" type="application/rss+xml" title="Matt Allan" />
+
+
+<meta property="og:title" content="REST and DDD" />
+<meta property="og:description" content="I recently gave a talk at the Laravel SF meetup about hexagonal architecture in PHP, and demonstrated it using Laravel. Here&rsquo;s the slide deck I made:
+ 
+While living in California I worked on a REST API that took a lot of ideas from Domain Driven Design (DDD) and Hexagonal Architecture. The talk was mostly an introduction to Hexagonal architecture, but it also covers some valuable lessons I learned about combining DDD and REST." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://mattallan.org/posts/rest-and-ddd/" />
+
+
+
+<meta property="article:published_time" content="2016-03-30T12:00:00-05:00"/>
+
+<meta property="article:modified_time" content="2016-03-30T12:00:00-05:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="REST and DDD">
+<meta itemprop="description" content="I recently gave a talk at the Laravel SF meetup about hexagonal architecture in PHP, and demonstrated it using Laravel. Here&rsquo;s the slide deck I made:
+ 
+While living in California I worked on a REST API that took a lot of ideas from Domain Driven Design (DDD) and Hexagonal Architecture. The talk was mostly an introduction to Hexagonal architecture, but it also covers some valuable lessons I learned about combining DDD and REST.">
+
+
+<meta itemprop="datePublished" content="2016-03-30T12:00:00-05:00" />
+<meta itemprop="dateModified" content="2016-03-30T12:00:00-05:00" />
+<meta itemprop="wordCount" content="954">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="REST and DDD"/>
+<meta name="twitter:description" content="I recently gave a talk at the Laravel SF meetup about hexagonal architecture in PHP, and demonstrated it using Laravel. Here&rsquo;s the slide deck I made:
+ 
+While living in California I worked on a REST API that took a lot of ideas from Domain Driven Design (DDD) and Hexagonal Architecture. The talk was mostly an introduction to Hexagonal architecture, but it also covers some valuable lessons I learned about combining DDD and REST."/>
+<meta name="twitter:site" content="@https://www.twitter.com/__yuloh"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='http://mattallan.org/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+
+	
+		<a class="cta" href="http://mattallan.org/index.xml">Subscribe</a>
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>REST and DDD</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        March 30, 2016
+        <br>
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>I recently gave a talk at the Laravel SF meetup about hexagonal architecture in PHP, and demonstrated it using Laravel.  Here&rsquo;s the slide deck I made:</p>
+
+<p><iframe src="https://docs.google.com/presentation/d/1kqcMqqmZbttgJcBCvmpXbzlTHVphcRCioshpx_bjc1w/embed?start=false&loop=false&delayms=3000" frameborder="0" width="480" height="299" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<br/></p>
+
+<p>While living in California I worked on a REST API that took a lot of ideas from Domain Driven Design (DDD) and Hexagonal Architecture.  The talk was mostly an introduction to Hexagonal architecture, but it also covers some valuable lessons I learned about combining DDD and REST.</p>
+
+<h2 id="quicksilver">Quicksilver</h2>
+
+<p>I put together a demo application to explain what I was talking about.  Since the big idea of hexagonal architecture is that your application on the inside is completely isolated from the outside (HTTP and databases basically), I wrote the application as a separate repository that got dropped into the framework.  The core is <a href="https://github.com/yuloh/quicksilver">in this repository</a>, and I dropped it into Laravel <a href="https://github.com/yuloh/l5-quicksilver">in this repository</a>.</p>
+
+<p>So the domain has some entities like <a href="https://github.com/yuloh/quicksilver/blob/master/src/Domain/Delivery.php">this delivery</a> which are just plain old PHP objects.  The delivery has these fields:</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">Delivery</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="nv">$id</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$pickup</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$destination</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$requester</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$priority</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$signature</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$status</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+<p>Since a delivery can be picked up by a courier, there is a <a href="https://github.com/yuloh/quicksilver/blob/master/src/Application/Delivery/DeliverRequest.php">pickup request</a> for all of the info you need to pickup a delivery and a <a href="https://github.com/yuloh/quicksilver/blob/master/src/Application/Delivery/Deliver.php">pickup handler</a> that accepts the request.  It basically looks like this:</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">DeliverRequest</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="o"></span><span class="fm">__construct</span><span class="p">(</span><span class="nv">$deliveryId</span><span class="p">,</span> <span class="nv">$signature</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">deliveryId</span> <span class="o">=</span> <span class="nv">$deliveryId</span><span class="p">;</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">signature</span>  <span class="o">=</span> <span class="nv">$signature</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div><div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">Deliver</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="o"></span><span class="fm">__construct</span><span class="p">(</span><span class="nx">Delivery\Repository</span> <span class="nv">$deliveryRepository</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">deliveryRepository</span> <span class="o">=</span> <span class="nv">$deliveryRepository</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="o"></span><span class="fm">__invoke</span><span class="p">(</span><span class="nx">DeliverRequest</span> <span class="nv">$request</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$delivery</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">deliveryRepository</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getDeliveryId</span><span class="p">());</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$delivery</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">EntityNotFoundException</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="nv">$delivery</span><span class="o">-&gt;</span><span class="na">deliver</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">getSignature</span><span class="p">());</span>
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">deliveryRepository</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$delivery</span><span class="p">);</span>
+        <span class="k">return</span> <span class="nv">$delivery</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>It&rsquo;s a straightforward action and the data needed for it.  Splitting it up into two separate classes has a couple of benefits, but they aren&rsquo;t important for this discussion.  All of this logic is in the core application, since it&rsquo;s integral to what the fictional courier company app does.  The logic will be the same regardless of being exposed through a REST API or a 1990&rsquo;s HTML form.</p>
+
+<h2 id="mapping-rest-resources-on-to-domain-entities">Mapping REST Resources On To Domain Entities</h2>
+
+<p>If you were writing a REST api for this app you would have a delivery resource.  It would probably look like this:</p>
+
+<pre><code>GET http://api.quicksilver.dev/deliveries/29292
+</code></pre>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">29292</span><span class="p">,</span>
+    <span class="nt">&#34;pickup_name&#34;</span><span class="p">:</span> <span class="s2">&#34;Tyler Durden&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;pickup_street&#34;</span><span class="p">:</span> <span class="s2">&#34;555 Paper St&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;pickup_city&#34;</span><span class="p">:</span> <span class="s2">&#34;chicago&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;pickup_state&#34;</span><span class="p">:</span> <span class="s2">&#34;IL&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;pickup_post_code&#34;</span><span class="p">:</span> <span class="s2">&#34;66043&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;dropoff_name&#34;</span><span class="p">:</span> <span class="s2">&#34;Joey Ramone&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;dropoff_street&#34;</span><span class="p">:</span> <span class="s2">&#34;222 Michigan Ave&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;dropoff_city&#34;</span><span class="p">:</span> <span class="s2">&#34;chicago&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;dropoff_state&#34;</span><span class="p">:</span> <span class="s2">&#34;IL&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;dropoff_post_code&#34;</span><span class="p">:</span> <span class="s2">&#34;99922&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;priority&#34;</span><span class="p">:</span> <span class="s2">&#34;STANDARD&#34;</span><span class="p">,</span>
+    <span class="nt">&#34;signature&#34;</span><span class="p">:</span> <span class="kc">null</span>
+<span class="p">}</span></code></pre></div>
+<p>Now the question is, how do you map the delivery resource to the delivery entity?  Since they both have a bunch of fields with data, it seems logical to serialize the entity as JSON for GET requests, and call the setters for each field on PATCH requests.</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="k">class</span> <span class="nc">DeliveryController</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="o"></span><span class="nf">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$delivery</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">deliveryRepository</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="nx">json_encode</span><span class="p">(</span><span class="nv">$delivery</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="o"></span><span class="nf">update</span><span class="p">(</span><span class="nv">$id</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nv">$delivery</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">deliveryRepository</span><span class="o">-&gt;</span><span class="na">find</span><span class="p">(</span><span class="nv">$id</span><span class="p">);</span>
+
+        <span class="nv">$delivery</span><span class="o">-&gt;</span><span class="na">updateFromArray</span><span class="p">(</span><span class="nv">$request</span><span class="o">-&gt;</span><span class="na">json</span><span class="p">());</span>
+
+        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">deliveryRepository</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">(</span><span class="nv">$delivery</span><span class="p">);</span>
+
+        <span class="k">return</span> <span class="nx">json_encode</span><span class="p">(</span><span class="nv">$delivery</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<blockquote>
+<p>You should be mapping the REST resource to domain actions, not entities.</p>
+</blockquote>
+
+<p>This works, but taking this approach with DDD means you are wasting your time.  There isn&rsquo;t really any point to having a rich domain with services and objects with behaviour if you are just going to treat your objects as bags of getters and setters.</p>
+
+<p>Instead, think about mapping resources to domain actions, not entities. A PATCH request usually has a couple of different intentions.  <code>PATCH /users/12</code> with the payload <code>{ &quot;phone_number&quot; : &quot;727-555-1234&quot;}</code> could coorespond to the action <code>UpdateContactInfo</code>, which <code>PATCH /users/12</code> with the payload <code>{ &quot;password&quot;: &quot;newPassw0rd&quot;}</code> would coorespond to the action <code>UpdatePassword</code>.  Think about what these intentions are and focus on mapping those.  Once you have figured out what actions the resource has, you know what fields you need to expose for GET requests.</p>
+
+<p>For our delivery example, a PATCH request means the API user either wants to pickup or dropoff a delivery.  The update method of the <a href="https://github.com/yuloh/l5-quicksilver/blob/master/app/Http/Controllers/DeliveryController.php">delivery controller</a> ended up looking like this:</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">class</span> <span class="nc">DeliveryController</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="o"></span><span class="nf">update</span><span class="p">(</span><span class="nx">Delivery\Pickup</span> <span class="nv">$pickup</span><span class="p">,</span> <span class="nx">Delivery\Deliver</span> <span class="nv">$deliver</span><span class="p">,</span> <span class="nx">Request</span> <span class="nv">$httpRequest</span><span class="p">,</span> <span class="nv">$deliveryId</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$httpRequest</span><span class="o">-&gt;</span><span class="na">input</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="nx">Status</span><span class="o">::</span><span class="na">PICKED_UP</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$request</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">marshal</span><span class="p">(</span>
+                <span class="nx">Delivery\PickupRequest</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+                <span class="nv">$httpRequest</span><span class="p">,</span>
+                <span class="nx">compact</span><span class="p">(</span><span class="s1">&#39;deliveryId&#39;</span><span class="p">)</span>
+            <span class="p">);</span>
+            <span class="nv">$delivery</span> <span class="o">=</span> <span class="nv">$pickup</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$httpRequest</span><span class="o">-&gt;</span><span class="na">input</span><span class="p">(</span><span class="s1">&#39;status&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="nx">Status</span><span class="o">::</span><span class="na">DELIVERED</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$request</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">marshal</span><span class="p">(</span>
+                <span class="nx">Delivery\DeliverRequest</span><span class="o">::</span><span class="na">class</span><span class="p">,</span>
+                <span class="nv">$httpRequest</span><span class="p">,</span>
+                <span class="nx">compact</span><span class="p">(</span><span class="s1">&#39;deliveryId&#39;</span><span class="p">)</span>
+            <span class="p">);</span>
+            <span class="nv">$delivery</span> <span class="o">=</span> <span class="nv">$deliver</span><span class="p">(</span><span class="nv">$request</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">HttpResponseException</span><span class="p">(</span><span class="nx">response</span><span class="p">(</span><span class="s1">&#39;Unknown Request&#39;</span><span class="p">,</span> <span class="mi">400</span><span class="p">));</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="nx">fractal</span><span class="p">()</span>
+            <span class="o">-&gt;</span><span class="na">item</span><span class="p">(</span><span class="nv">$delivery</span><span class="p">)</span>
+            <span class="o">-&gt;</span><span class="na">transformWith</span><span class="p">(</span><span class="k">new</span> <span class="nx">DeliveryTransformer</span><span class="p">())</span>
+            <span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+<p>By building our REST resource around actions, our internal domain entity is free to change without affecting the REST resource.  You get to model your domain in user stories (like &ldquo;I want to pickup a delivery&rdquo;) and you only have to do a little bit of work to map HTTP requests to actions.</p>
+
+<h2 id="complex-resources">Complex Resources</h2>
+
+<p>You might end up with a lot of different actions on one resource.  Usually this is a sign that you have another resource waiting to be extracted.  Using the delivery example, it might be worth splitting it up into two separate resources, delivery and deliver-status.</p>
+
+<pre><code>GET /deliveries
+GET /delivery-statuses
+</code></pre>
+
+<p>Then all of the logic for updating the status is moved into the <code>DeliveryStatusController</code>, and your DeliveryController can focus on stuff like updating the address.  Since status changes usually have extra metadata you need to save with the status change (like who paid for an order and the payment method), it&rsquo;s almost always a good idea to break out status changes into a separate resource.</p>
+
+<h2 id="staying-sane">Staying Sane</h2>
+
+<p>Doing DDD with a REST API starts to feel like you are spending all day mapping your REST resource on to your domain model on to your database.  It can get pretty tiresome.  I would think long and hard about building an entire domain layer if the app would really work fine with some active record models and mass assignment.  Or maybe <a href="http://nobackend.org/">get rid of the backend entirely</a>  and just use Firebase or CouchDB?</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/__yuloh">
+    <img class="avatar" src="http://mattallan.org/images/avatar.png">
+    <div>
+        <span class="dark">Matt Allan</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=http%3a%2f%2fmattallan.org%2fposts%2frest-and-ddd%2f - REST%20and%20DDD by @__yuloh"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="/posts/protobuf-php-services/">Protobuf PHP Services<aside class="dates">Jan 27 2018</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers-part-ii-autowiring/">Understanding Dependency Injection Containers Part II - Autowiring<aside class="dates">Sep 1 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/setting-the-guard-per-route-in-laravel/">Setting the Guard Per Route in Laravel<aside class="dates">Jul 22 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dependency-injection-containers/">Understanding Dependency Injection Containers<aside class="dates">Jul 15 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/json-schema-references/">JSON Schema References<aside class="dates">May 5 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/dont-use-illuminate-support/">Don&#39;t Use Illuminate Support<aside class="dates">Apr 21 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/github-pages-best-practices/">Github Pages Best Practices<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/iife-life-iife-in-php/">IIFE LIFE - IIFE In PHP<aside class="dates">Apr 12 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/automatically-run-unit-tests-with-entr/">Automatically Run Unit Tests With entr<aside class="dates">Mar 31 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="/posts/why-you-should-be-using-annotations/">Why you should be using annotations (with Doctrine)<aside class="dates">Feb 19 2016</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://www.github.com/yuloh">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/__yuloh">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2018 Matt Allan
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://mattallan.org/js/main.js"></script>
+<script src="http://mattallan.org/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>
