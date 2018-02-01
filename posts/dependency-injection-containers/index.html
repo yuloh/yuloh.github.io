@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Matt Allan">
 
-<meta name="generator" content="Hugo 0.34" />
+<meta name="generator" content="Hugo 0.35" />
 <title>Understanding Dependency Injection Containers</title>
 <link rel="shortcut icon" href="http://mattallan.org/images/favicon.ico">
 <link rel="stylesheet" href="http://mattallan.org/css/style.css">
@@ -62,7 +62,8 @@
 
 <meta itemprop="keywords" content="" />
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Understanding Dependency Injection Containers"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Understanding Dependency Injection Containers"/>
 <meta name="twitter:description" content="Introduction If you are writing modern PHP, you will run across dependency injection a lot. Basically all dependency injection means is that if an object needs something, you pass it in. So if you have a class like this:
 &lt;?php class UsersController { public function index() { $repository = new UserRepository( new DbAdapter( &#39;mysql:dbname=testdb;host=127.0.0.1&#39;, &#39;dbuser&#39;, &#39;dbpass&#39; ) ); $users = $repository-&gt;all(); return json_encode($users); } }&lt;?php $controller = new UsersController(); &hellip;you would pass in (inject) the object it needs (the dependency) instead of instantiating it in the class."/>
 <meta name="twitter:site" content="@https://www.twitter.com/__yuloh"/>

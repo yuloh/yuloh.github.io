@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Matt Allan">
 
-<meta name="generator" content="Hugo 0.34" />
+<meta name="generator" content="Hugo 0.35" />
 <title>Why you should be using annotations (with Doctrine)</title>
 <link rel="shortcut icon" href="http://mattallan.org/images/favicon.ico">
 <link rel="stylesheet" href="http://mattallan.org/css/style.css">
@@ -64,7 +64,8 @@ mysql&gt; describe articles; &#43;-------&#43;--------------&#43;------&#43;----
 
 <meta itemprop="keywords" content="" />
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Why you should be using annotations (with Doctrine)"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Why you should be using annotations (with Doctrine)"/>
 <meta name="twitter:description" content="Introduction I do a lot of PHP development with Doctrine ORM. If you aren&rsquo;t familiar with it, it&rsquo;s a library for making your PHP objects talk to the database. So if you have a class like this:
 &lt;?php class Article { protected $id; protected $title; } &hellip;and a table like this:
 mysql&gt; describe articles; &#43;-------&#43;--------------&#43;------&#43;-----&#43;---------&#43;-------&#43; | Field | Type | Null | Key | Default | Extra | &#43;-------&#43;--------------&#43;------&#43;-----&#43;---------&#43;-------&#43; | id | int(11) | NO | | NULL | | | title | varchar(255) | NO | | NULL | | &#43;-------&#43;--------------&#43;------&#43;-----&#43;---------&#43;-------&#43; &hellip;then you need a way to map them to each other, and say that the table articles cooresponds to the class Article, the id field cooresponds to the id property, etc."/>
